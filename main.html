@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+	function ajax(){
+		var httpRequest;
+		if (window.XMLHttpRequest){
+			httpRequest = new XMLHttpRequest();
+		} 
+		else if (window.ActiveXObject){
+			try {
+				httpRequest = new ActiveXObject("MSXML2.XMLHTTP");
+			} catch (e) {
+				try {
+					httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+				} catch (e) {}
+			}
+		}
+		if (httpRequest){
+			return httpRequest;
+		}
+	}
+
+	function loadJson(url, func){
+		var request = ajax();
+		if(request){
+			request.onreadystatechange = function() {
+				if (request.readyState==4){ //&& request.status==200){
+					func(JSON.parse(request.responseText));
+				}
+			}
+			request.onload = request.onreadystatechange
+			request.open('GET', url, true);
+			request.overrideMimeType("application/json"); 
+			request.send(null);
+		}
+	}
+	
+	function getFunctionName(func) {
+		var ret = func.toString();
+		ret = ret.substr('function '.length);
+		ret = ret.substr(0, ret.indexOf('('));
+		return ret;
+	}
+
+	function loadJsonP(url, func){
+		var script = document.createElement('script');
+		script.src = url + '&callback=' + getFunctionName(func);
+		document.getElementsByTagName('head')[0].appendChild(script);
+	}
+
+	function installPackage(pkgname) {
+		alert('Installing ' + pkgname + '...')
+	}
+	
+	function clearTableData(id){
+		getTableBody(id).innerHTML = '';
+	}
+
+	function getTableBody(id){
+		if(isEmptyTable(id)){
+			document.getElementById(id).appendChild(document.createElement('tbody'));
+		}
+		return document.getElementById(id).tBodies[0];
+	}
+
+	function isEmptyTable(id){
+		return document.getElementById(id).tBodies.length == 0
+	}
+
+	function appendTableCaption(id, text){
+		var caption = document.getElementById(id).createCaption();
+		caption.style.captionSide = 'bottom';
+		caption.innerHTML = text;
+	}
+	
+	function showData(data) {
+		var table = document.getElementById('result');
+		clearTableData('result');
+		var count = data.results.length
+		appendTableCaption('result', count + ' packages found.')
+		for(var i = 0; i < count; i++){
+			row = table.insertRow(-1)
+			pkgname = (data.results[i].pkgname)? data.results[i].pkgname : data.results[i].Name;
+			pkgver = (data.results[i].pkgver)? data.results[i].pkgver : data.results[i].Version;
+			pkgdesc = (data.results[i].pkgdesc)? data.results[i].pkgdesc : data.results[i].Description;
+			var n = 0;
+			row.insertCell(n++).innerHTML = i + 1;
+			row.insertCell(n++).innerHTML = '<input type="button" value="Install" onclick="installPackage(\''+pkgname+'\')">';
+			row.insertCell(n++).innerHTML = pkgname
+			row.insertCell(n++).innerHTML = pkgver;
+			row.insertCell(n++).innerHTML = pkgdesc;
+		}
+	}
+
+	function search(value){
+		appendTableCaption('result', '<tr><td colspan="4">Loading...</td></tr>')
+		//var url = 'https://www.archlinux.org/packages/search/json/?q='+value;
+		//var url = 'packages.json';
+		//loadJson(url, showData);
+		var urlAur = 'http://aur.archlinux.org/rpc.php?type=search&arg='+value;
+		loadJsonP(urlAur, showData);
+	}
+	
+	</script>
+</head>
+<body>
+<label>Search: <input type="text" onkeypress="if(event.keyCode == 13)search(this.value);"/><input type="button" value="Install"></label>
+<table id="result" border="1" width="100%">
+<thead>
+	<tr><th>Nr.</th><th>Action</th><th>Package</th><th>Version</th><th>Description</th></tr>
+</thead>
+</table>
+</body>
+</html>
