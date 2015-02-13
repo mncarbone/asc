@@ -1,0 +1,52 @@
+Arch Sofware Center
+===================
+A Simple Sofware center for Arch Linux Distribution
+
+Main Features:
+--------------
+	- Uses pacman and AUR repositories (via yaourt?configurable pacman helper?)
+	- Based on Python3 and PyQt(4/5?)
+	- Very few Dependencies (just pacman, pyqt?)
+	- Search for:
+		- Exact Package Name First
+		- Description (from https://www.archlinux.org/packages/ and AUR)
+		- Categories
+		- Installed or Not
+		- Updates
+		- Local .desktop files installed user apps
+	- Offline Search
+	- Uses QWebView for display in HTML:
+		- Icons
+		- Package Name
+		- Description
+		- Screenshots
+		- Categories
+		- Installed
+			- Button to Update
+			- Button to uninstall
+			- Button to run
+		- Not Installed
+			- Button to install
+		- Access to Wiki Related Articles
+
+- References/Related:
+---------------------
+	- Pacman (https://wiki.archlinux.org/index.php/Pacman_Rosetta)
+	- AUR (https://www.digitalocean.com/community/tutorials/how-to-use-yaourt-to-easily-download-arch-linux-community-packages)
+	- Yaourt (https://github.com/archlinuxfr/yaourt)
+	- Python
+	- PyQt
+	- QWebkit
+	- Getting events from QWebView to python
+	- Arch packages info to JSON: https://wiki.archlinux.org/index.php/Official_repositories_web_interface
+	- AurJson (https://wiki.archlinux.org/index.php/AurJson)
+	- Similar(¿Contribute?) to yoimnotpro (https://aur.archlinux.org/packages/yoimnotpro/)
+	- Desktop Entries (Gendesk) (https://wiki.archlinux.org/index.php/Desktop_entries)
+	- Open Icon Library (http://sourceforge.net/p/openiconlibrary)
+	- AppStream: tool for creating Sofware Centers (https://www.archlinux.org/packages/?q=appstream)
+	- Pkgfile: for search info of non-instaled pkgs (https://wiki.archlinux.org/index.php/Pkgfile)
+	- Packagekit: for install packages (https://www.archlinux.org/packages/community/x86_64/packagekit/)
+	- Package-Query https://github.com/archlinuxfr/package-query/
+	- For packaging: https://wiki.archlinux.org/index.php/Creating_packages
+	- Pbget: get backage builds from ABS and AUR
+
